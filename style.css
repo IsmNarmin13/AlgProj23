@@ -182,6 +182,10 @@ li {
     display: flex;
     justify-content: left;
 }
+.val1{
+    
+    margin-left: 15px;
+}
 
 .newClass {
     overflow-y: scroll;

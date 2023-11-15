@@ -21,7 +21,7 @@ document.querySelector(".main form .add button").addEventListener("click", async
         arr.push(newItem);
         i = arr.length;
 
-        li.innerHTML = `<span class="val">${i}<span> ${inputValue}</span></span>
+        li.innerHTML = `<span class="val">${i}<span class="val1">${inputValue}</span></span>
              <i class="fa-regular fa-circle-xmark remove"></i>`;
         li.classList.add('no-list-style');
         input.value = '';
@@ -66,7 +66,7 @@ function updateList() {
 
     arr.forEach((item, index) => {
         let li = document.createElement("li");
-        li.innerHTML = `<span  class="val">${index + 1}<span> ${item.content}</span></span> 
+        li.innerHTML = `<span  class="val">${index + 1}<span class="val1">${item.content}</span></span> 
         <i class="fa-regular fa-circle-xmark remove"></i>`;
         li.classList.add('no-list-style');
         itemsList.appendChild(li);
