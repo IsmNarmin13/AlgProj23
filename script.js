@@ -1,10 +1,9 @@
 document.querySelector("ul").style.display = "none";
 
-let arr = []
+let arr = [];
 let sort = 'increase';
 let lastNumber = 0;
-let i=0;
-
+let i = 0;
 
 document.querySelector(".main form .add button").addEventListener("click", async function (e) {
     e.preventDefault();
@@ -12,16 +11,18 @@ document.querySelector(".main form .add button").addEventListener("click", async
     let input = document.querySelector('.inp');
     let li = document.createElement("li");
 
-    if (input.value) {
+    let inputValue = input.value.trim();
+
+    if (inputValue) {
         document.querySelector('ul').style.display = "block";
         let newItem = {
-            content: input.value
-        }
+            content: inputValue
+        };
         arr.push(newItem);
         i = arr.length;
 
-        li.innerHTML = `<span class="val">${i}<span> ${input.value}</span></span>
-             <i onclick="deletes(this)" class="fa-regular fa-circle-xmark remove"></i`;
+        li.innerHTML = `<span class="val">${i}<span> ${inputValue}</span></span>
+             <i class="fa-regular fa-circle-xmark remove"></i>`;
         li.classList.add('no-list-style');
         input.value = '';
         tasks.appendChild(li);
@@ -31,42 +32,16 @@ document.querySelector(".main form .add button").addEventListener("click", async
                 e.classList.add("newClass");
             }
         });
+
+        updateList();
     }
 });
 
-
-document.querySelector('.plus').addEventListener('click', () => {
-    document.querySelector(".inpp").style.display = 'block';
-})
-
-function deletes(a) {
-    let index = Array.from(a.parentElement.parentElement.children).indexOf(a.parentElement);
-    arr.splice(index, 1);
-    console.log(arr);
-    console.log(index)
-    a.parentElement.remove();
-    
-    document.querySelectorAll(".tasks li").forEach((li, newIndex) => {
-        li.querySelector('.val').textContent = `${newIndex + 1} ${arr[newIndex].content}`;
-    });
-
-
-
-    if (arr.length == 0) {
-        document.querySelector("ul").style.display = "none";
-    }
-    else if (arr.length > 0) {
-        document.querySelector("ul").style.display = "block";
-    }
-}
-
 document.querySelector(".toggle-icon").addEventListener('click', () => {
-    console.log(sort)
     if (sort === 'increase') {
-        arr.sort((a, b) => a.content.localeCompare(b.content));
+        arr.sort((a, b) => a.content.localeCompare(b.content, undefined, { sensitivity: 'base' }));
         sort = 'decrease';
-    }
-    else if (sort === 'decrease') {
+    } else if (sort === 'decrease') {
         arr.reverse()
         sort = 'increase';
     }
@@ -81,6 +56,10 @@ document.querySelector(".toggle-icon").addEventListener('click', () => {
     }
 });
 
+document.querySelector(".main form .add .fa-plus").addEventListener('click', () => {
+    document.querySelector(".inpp").style.display = 'block';
+});
+
 function updateList() {
     let itemsList = document.querySelector('.tasks');
     itemsList.innerHTML = '';
@@ -88,7 +67,7 @@ function updateList() {
     arr.forEach((item, index) => {
         let li = document.createElement("li");
         li.innerHTML = `<span  class="val">${index + 1}<span> ${item.content}</span></span> 
-        <i onclick="deletes(this)" class="fa-regular fa-circle-xmark remove"></i>`;
+        <i class="fa-regular fa-circle-xmark remove"></i>`;
         li.classList.add('no-list-style');
         itemsList.appendChild(li);
     });
@@ -98,6 +77,27 @@ function updateList() {
         }
     });
 }
+
+function deletes(event) {
+    if (event.target.classList.contains("remove")) {
+        let index = Array.from(event.target.parentElement.parentElement.children).indexOf(event.target.parentElement);
+        arr.splice(index, 1);
+        console.log(arr);
+        console.log(index);
+        event.target.parentElement.remove();
+
+        document.querySelectorAll(".tasks li").forEach((li, newIndex) => {
+            li.querySelector('.val').textContent = `${newIndex + 1} ${arr[newIndex].content}`;
+        });
+
+        if (arr.length === 0) {
+            document.querySelector("ul").style.display = "none";
+        } else if (arr.length > 0) {
+            document.querySelector("ul").style.display = "block";
+        }
+    }
+}
+
 document.querySelector('.my').addEventListener('click', () => {
     document.querySelector('input').value = "";
 });
